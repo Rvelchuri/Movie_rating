@@ -31,3 +31,6 @@ def create_rating(user,movie,score):
     db.session.add(rating)
     db.session.commit()
     return rating
+
+def return_movie():
+    return Movie.query.all()
