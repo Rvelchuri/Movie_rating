@@ -49,3 +49,6 @@ def get_user_by_email(email):
 
 def login_user(email, password):
     return User.query.filter((User.email == email) & (User.password == password)).first()
+
+def get_rating(score):
+    return Rating.query.get(score)

@@ -1,3 +1,4 @@
+
 """Server for movie ratings app."""
 
 from flask import (Flask, render_template, request, flash, session, redirect)
@@ -70,7 +71,20 @@ def log_in():
 
     return redirect("/")
 
+@app.route("/ratings/<movie_id>", methods=["POST"])
+def user_rating(movie_id):
+   rating = request.form.get("rating")
+   rating = int(rating)
+   movie = crud.get_movie_by_id(movie_id)
+   key = session['key']
+   user = crud.get_user_by_id(key)
 
+   if 'key' in session:
+        crud.create_rating(user, movie, rating)
+        flash("Rating created")
+   else:
+        flash("Cannot create rating. Please log in.")
+   return redirect(f"/movies/{movie_id}")
 
 if __name__ == "__main__":
     # DebugToolbarExtension(app)
