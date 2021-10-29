@@ -41,7 +41,35 @@ def all_users():
 def show_user(user_id):
     user =crud.get_user_by_id(user_id)
     return render_template("user_details.html", user=user)
-     
+
+@app.route("/users", methods=["POST"])
+def register_user():
+   email = request.form.get("email")
+   password = request.form.get("password")
+   user = crud.get_user_by_email(email)
+
+   if user:
+       flash("Cannot create an account. Please try again.")
+   else:
+        crud.create_user(email, password)
+        flash("Account was created successfully. Please log in.")
+   return redirect("/")
+
+@app.route("/login", methods=["POST"])
+def log_in():
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = crud.login_user(email, password)
+    if user:
+        key = user.user_id
+        session['key'] = key
+        flash('Logged in!')
+    else:
+       flash("Try again")
+
+    return redirect("/")
+
 
 
 if __name__ == "__main__":
