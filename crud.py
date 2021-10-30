@@ -43,3 +43,12 @@ def return_user():
 
 def get_user_by_id(user_id):
     return User.query.get(user_id)
+
+def get_user_by_email(email):
+    return User.query.filter(User.email == email).first()
+
+def login_user(email, password):
+    return User.query.filter((User.email == email) & (User.password == password)).first()
+
+def get_rating(score):
+    return Rating.query.get(score)
